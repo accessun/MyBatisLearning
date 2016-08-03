@@ -20,12 +20,13 @@
     </if>
   </select>
 
-  <!-- The fully qualified class name or alias for the parameter that will be passed into this statement. This attribute 
-    is optional because MyBatis can calculate the TypeHandler to use out of the actual parameter passed to the statement. Default 
-    is unset. -->
+  <!-- The fully qualified class name or alias for the parameter that will be passed into this statement. 
+    This attribute is optional because MyBatis can calculate the TypeHandler to use out of the actual parameter 
+    passed to the statement. Default is unset. -->
 
   <select id="selectEmployee" parameterType="Employee" resultMap="EmployeeResult">
-    SELECT ID, NAME, GENDER, SALARY, AGE, CITY,
+    SELECT ID, NAME, GENDER,
+    SALARY, AGE, CITY,
     DEPT_ID FROM `employees` WHERE ID = 1
   </select>
 
@@ -71,14 +72,27 @@
   </select>
 
   <select id="selectEmployeeHashMap" parameterType="int" resultType="hashmap">
-    SELECT * FROM `employees` WHERE ID = #{id}
+    SELECT * FROM `employees`
+    WHERE ID = #{id}
   </select>
 
-  <insert id="insertEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+  <!-- The keyColumn attribute is only required in certain databases like PostgreSQL when id is not the 
+    first column in database. -->
+  <insert id="insertEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="id"
+    keyColumn="ID">
     INSERT
     INTO `employees` (NAME, AGE, CITY, DEPT_ID, GENDER, SALARY)
-    VALUES (#{name}, #{age}, #{city}, #{deptId}, #{gender},
+    VALUES (#{name},
+    #{age}, #{city}, #{deptId}, #{gender},
     #{salary})
+  </insert>
+  
+  <!-- If your database also supports multi-row insert, you can pass a list or an array of Authors and retrieve the auto-generated keys. -->
+  <insert id="insertEmployeeMultiRow" useGeneratedKeys="true" keyProperty="id">
+    insert into `employees` (name, age, city, dept_id, gender, salary) values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.name}, #{item.age}, #{item.city}, #{item.deptId}, #{item.gender}, #{item.salary})
+    </foreach>
   </insert>
 
   <delete id="deleteOne" parameterType="int">

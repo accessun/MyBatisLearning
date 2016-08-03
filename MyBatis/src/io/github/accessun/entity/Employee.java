@@ -66,6 +66,19 @@ public class Employee {
         this.deptId = deptId;
     }
 
+    public Employee() {
+    }
+    
+    public Employee(String name, String gender, int salary, int age, String city, int deptId) {
+        super();
+        this.name = name;
+        this.gender = gender;
+        this.salary = salary;
+        this.age = age;
+        this.city = city;
+        this.deptId = deptId;
+    }
+
     @Override
     public String toString() {
         return "Employee [id=" + id + ", name=" + name + ", gender=" + gender + ", salary=" + salary + ", age=" + age
