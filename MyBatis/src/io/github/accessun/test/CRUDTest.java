@@ -1,5 +1,6 @@
 package io.github.accessun.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,21 @@ public class CRUDTest {
         employee.setGender("male");
         employee.setSalary(8700);
         sqlSession.insert("employee_db_op.insertEmployee", employee);
+        sqlSession.commit();
+    }
+    
+    @Test
+    public void testInsertMultiRow() {
+        Employee employee1 = new Employee("Cook", "male", 8900, 21, "Shanghai", 1);
+        Employee employee2 = new Employee("Agnes", "female", 7000, 24, "Shanghai", 4);
+        Employee employee3 = new Employee("Anna", "female", 7800, 25, "Beijing", 3);
+        
+        List<Employee> employeesToInsert = new ArrayList<>();
+        employeesToInsert.add(employee1);
+        employeesToInsert.add(employee2);
+        employeesToInsert.add(employee3);
+        
+        sqlSession.insert("employee_db_op.insertEmployeeMultiRow", employeesToInsert);
         sqlSession.commit();
     }
 
