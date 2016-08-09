@@ -24,6 +24,7 @@
 
   <mappers>
     <mapper resource="EmployeeMapper.xml" />
+    <mapper resource="BlogMapper.xml" />
   </mappers>
 
 </configuration>
