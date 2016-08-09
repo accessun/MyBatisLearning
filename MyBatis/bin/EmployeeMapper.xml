@@ -5,6 +5,11 @@
 
   <resultMap type="Employee" id="EmployeeResult">
     <id column="ID" jdbcType="INTEGER" property="id" /> <!-- java.sql.Types -->
+    <!-- property : You can map to something simple like: username, or to something more complicated like: address.street.number. -->
+    <!-- jdbcType: The JDBC type is only required for nullable columns upon insert, update or delete. -->
+    <!-- javaType: A fully qualified Java class name, or a type alias (see the table above for the list of built-in type 
+      aliases). MyBatis can usually figure out the type if you're mapping to a JavaBean. However, if you are mapping to a HashMap, 
+      then you should specify the javaType explicitly to ensure the desired behaviour. -->
     <result column="NAME" jdbcType="VARCHAR" property="name" />
     <result column="GENDER" jdbcType="VARCHAR" property="gender" />
     <result column="SALARY" jdbcType="INTEGER" property="salary" />
@@ -70,7 +75,7 @@
     WHERE NAME LIKE #{pattern}
   </select>
 
-  <select id="selectEmployeeHashMap" parameterType="int" resultType="hashmap">
+  <select id="selectEmployeeHashMap" resultType="hashmap">
     SELECT * FROM `employees` WHERE ID = #{id}
   </select>
 
@@ -79,6 +84,14 @@
     INTO `employees` (NAME, AGE, CITY, DEPT_ID, GENDER, SALARY)
     VALUES (#{name}, #{age}, #{city}, #{deptId}, #{gender},
     #{salary})
+  </insert>
+
+  <insert id="insertEmployeeMultiRow" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO `employees` (NAME, AGE, CITY, DEPT_ID, GENDER, SALARY) VALUES
+    <foreach collection="list" item="item" separator=",">
+      (#{item.name}, #{item.age}, #{item.city}, #{item.deptId},
+      #{item.gender}, #{item.salary})
+    </foreach>
   </insert>
 
   <delete id="deleteOne" parameterType="int">
