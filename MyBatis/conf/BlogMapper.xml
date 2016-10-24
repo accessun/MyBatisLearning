@@ -4,6 +4,7 @@
 <mapper namespace="blog_db_op">
 
   <resultMap type="Blog" id="blogResult">
+    <!-- association: one blog 'has one' author -->
     <association property="author" column="author_id" javaType="Author" select="selectAuthor"></association>
   </resultMap>
 
