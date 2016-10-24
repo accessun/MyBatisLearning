@@ -19,13 +19,12 @@ public class CRUDTest {
 
     @Before
     public void setUp() {
-        sqlSession = MyBatisUtils.getSqlSession();
+        sqlSession = MyBatisUtils.getSession();
     }
 
     @After
     public void tearDown() {
-        MyBatisUtils.releaseSession(sqlSession);
-        sqlSession = null;
+        sqlSession.close();
     }
 
     @Test

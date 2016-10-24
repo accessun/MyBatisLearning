@@ -14,13 +14,12 @@ public class ComplexCRUDTest {
     
     @Before
     public void setUp() throws Exception {
-        sqlSession = MyBatisUtils.getSqlSession();
+        sqlSession = MyBatisUtils.getSession();
     }
 
     @After
     public void tearDown() throws Exception {
-        MyBatisUtils.releaseSession(sqlSession);
-        sqlSession = null;
+        sqlSession.close();
     }
 
     @Test

@@ -8,6 +8,6 @@ public class DBConnectionTest {
 
     @Test
     public void testGetSession() {
-        System.out.println(MyBatisUtils.getSqlSession());
+        System.out.println(MyBatisUtils.getSession());
     }
 }

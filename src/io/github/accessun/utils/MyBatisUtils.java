@@ -14,24 +14,31 @@ public class MyBatisUtils {
     
     static {
         String resource = "mybatis-config.xml";
+        InputStream inputStream = null;
         try {
-            InputStream inputStream = Resources.getResourceAsStream(resource);
+            inputStream = Resources.getResourceAsStream(resource);
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
     
-    public static SqlSession getSqlSession() {
+    private MyBatisUtils() {
+    }
+    
+    public static SqlSession getSession() {
         if (sqlSessionFactory != null) {
             return sqlSessionFactory.openSession();
         }
         return null;
     }
     
-    public static void releaseSession(SqlSession sqlSession) {
-        if (sqlSession != null) {
-            sqlSession.close();
-        }
-    }
 }
