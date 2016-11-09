@@ -24,7 +24,7 @@ create table employees (
     salary int(8),
     age int(3),
     city varchar(30),
-    dept_id int(11),
+    dept_id int unsigned,
     primary key (id),
     foreign key (dept_id) references departments(id)
 ) engine=innodb default charset=utf8;
@@ -41,7 +41,7 @@ create table authors (
 create table blogs (
     id int unsigned not null auto_increment,
     title varchar(50) not null,
-    author_id int(11) not null,
+    author_id int unsigned not null,
     primary key (id),
     foreign key (author_id) references authors(id)
 ) engine=innodb default charset=utf8;
