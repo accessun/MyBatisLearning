@@ -1,5 +1,6 @@
 package io.github.accessun.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import io.github.accessun.utils.MyBatisUtils;
@@ -8,6 +9,8 @@ public class DBConnectionTest {
 
     @Test
     public void testGetSession() {
-        System.out.println(MyBatisUtils.getSession());
+        String expectedSqlSessionQualifiedClassName = "org.apache.ibatis.session.defaults.DefaultSqlSession";
+        Assert.assertEquals(expectedSqlSessionQualifiedClassName, MyBatisUtils.getSession().getClass().getName());
     }
+    
 }
