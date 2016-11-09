@@ -12,13 +12,13 @@ use mybatisdemo;
 drop table if exists departments;
 
 create table departments (
-    id int(11) not null auto_increment,
+    id int unsigned not null auto_increment,
     dept_name varchar(30) not null,
     primary key (id)
 ) engine=innodb default charset=utf8;
 
 create table employees (
-    id int(11) not null auto_increment,
+    id int unsigned not null auto_increment,
     name varchar(30) not null,
     gender enum('female', 'male'),
     salary int(8),
@@ -30,7 +30,7 @@ create table employees (
 ) engine=innodb default charset=utf8;
 
 create table authors (
-    id int(11) not null auto_increment,
+    id int unsigned not null auto_increment,
     username varchar(30) not null,
     password varchar(50),
     email varchar(30),
@@ -39,7 +39,7 @@ create table authors (
 ) engine=innodb default charset=utf8;
 
 create table blogs (
-    id int(11) not null auto_increment,
+    id int unsigned not null auto_increment,
     title varchar(50) not null,
     author_id int(11) not null,
     primary key (id),
