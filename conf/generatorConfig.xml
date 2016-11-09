@@ -9,14 +9,14 @@
     </commentGenerator>
     <jdbcConnection connectionURL="jdbc:mysql://localhost:3306/mybatisdemo" driverClass="com.mysql.jdbc.Driver"
       password="123456" userId="root" />
-    <javaModelGenerator targetPackage="entity" targetProject="MyBatisLearning/src">
+    <javaModelGenerator targetPackage="io.github.accessun.entity" targetProject="MyBatisLearning/src">
       <property name="enableSubPackages" value="true" />
       <property name="trimStrings" value="true" />
     </javaModelGenerator>
-    <sqlMapGenerator targetPackage="entity" targetProject="MyBatisLearning/src">
+    <sqlMapGenerator targetPackage="io.github.accessun.entity" targetProject="MyBatisLearning/src">
       <property name="enableSubPackages" value="true" />
     </sqlMapGenerator>
-    <javaClientGenerator targetPackage="entity" targetProject="MyBatisLearning/src" type="XMLMAPPER">
+    <javaClientGenerator targetPackage="io.github.accessun.entity" targetProject="MyBatisLearning/src" type="XMLMAPPER">
       <property name="enableSubPackages" value="true" />
     </javaClientGenerator>
     <table tableName="employee" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
