@@ -1,7 +1,6 @@
 package io.github.accessun.entity;
 
 public class Department {
-
     private Integer id;
     private String deptName;
 

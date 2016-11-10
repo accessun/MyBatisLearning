@@ -1,7 +1,6 @@
 package io.github.accessun.entity;
 
 public class Employee {
-
     private Integer id;
     private String name;
     private String gender;

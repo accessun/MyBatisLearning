@@ -1,7 +1,6 @@
 package io.github.accessun.entity;
 
 public class Blog {
-
     private Integer id;
     private String title;
     private Author author;
