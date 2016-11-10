@@ -11,15 +11,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.github.accessun.entity.Employee;
+import io.github.accessun.entity.EmployeeMapper;
 import io.github.accessun.utils.MyBatisUtils;
 
 public class CRUDTest {
 
     private SqlSession sqlSession = null;
+    private EmployeeMapper empMapper = null;
 
     @Before
     public void setUp() {
         sqlSession = MyBatisUtils.getSession();
+        empMapper = sqlSession.getMapper(EmployeeMapper.class);
     }
 
     @After
@@ -29,18 +32,13 @@ public class CRUDTest {
 
     @Test
     public void testSelectOne() {
-        Employee worker = sqlSession.selectOne("employee_db_op.selectEmployee");
-
+        Employee worker = empMapper.selectEmployee();
         System.out.println(worker);
     }
 
     @Test
     public void testSelectList() {
-        Employee parameter = new Employee();
-        parameter.setCity("Beijing");
-
-        List<Employee> workers = sqlSession.selectList("employee_db_op.selectEmployees", parameter);
-
+        List<Employee> workers = empMapper.selectEmployees("Beijing");
         System.out.println(workers);
     }
 
@@ -49,11 +47,11 @@ public class CRUDTest {
         Employee parameter = new Employee();
         parameter.setName("Tom");
         parameter.setGender("female");
-        System.out.println(sqlSession.selectList("employee_db_op.selectEmployeeWhen", parameter));
+        System.out.println(empMapper.selectEmployeeWhen(parameter));
 
         parameter = new Employee();
         parameter.setGender("female");
-        System.out.println(sqlSession.selectList("employee_db_op.selectEmployeeWhen", parameter));
+        System.out.println(empMapper.selectEmployeeWhen(parameter));
     }
 
     @Test
@@ -61,18 +59,18 @@ public class CRUDTest {
         Employee parameter = new Employee();
         //parameter.setName("Tom");
         parameter.setGender("male");
-        System.out.println(sqlSession.selectList("employee_db_op.selectEmployeeWhere", parameter));
+        System.out.println(empMapper.selectEmployeeWhere(parameter));
     }
 
     @Test
     public void testDelete() {
-        sqlSession.delete("employee_db_op.deleteOne", 5);
+        empMapper.deleteOne(5);
         sqlSession.commit();
     }
 
     @Test
     public void testBatchDelete() {
-        sqlSession.delete("employee_db_op.deleteBatch", Arrays.asList(4, 6));
+        empMapper.deleteBatch(Arrays.asList(4, 6));
         sqlSession.commit();
     }
     
@@ -82,17 +80,18 @@ public class CRUDTest {
         parameter.setId(1);
         parameter.setAge(25);
         sqlSession.update("employee_db_op.updateEmployeeSet", parameter);
+        empMapper.updateEmployeeSet(parameter);
         sqlSession.commit();
     }
     
     @Test
     public void testSelectIn() {
-        System.out.println(sqlSession.selectList("employee_db_op.selectEmployeeIn", Arrays.asList(1, 3, 5)));
+        System.out.println(empMapper.selectEmployeeIn(Arrays.asList(1, 3, 5)));
     }
     
     @Test
     public void testSelectBind() {
-        System.out.println(sqlSession.selectList("employee_db_op.selectEmployeeBind", "om"));
+        System.out.println(empMapper.selectEmployeeBind("om"));
     }
     
     @Test
@@ -104,7 +103,7 @@ public class CRUDTest {
         employee.setDeptId(5);
         employee.setGender("male");
         employee.setSalary(8700);
-        sqlSession.insert("employee_db_op.insertEmployee", employee);
+        empMapper.insertEmployee(employee);
         sqlSession.commit();
     }
     
@@ -119,14 +118,14 @@ public class CRUDTest {
         employeesToInsert.add(employee2);
         employeesToInsert.add(employee3);
         
-        sqlSession.insert("employee_db_op.insertEmployeeMultiRow", employeesToInsert);
+        empMapper.insertEmployeeMultiRow(employeesToInsert);
         sqlSession.commit();
     }
 
     
     @Test
     public void testSelectHashMap() {
-        Map<String, Object> employee = sqlSession.selectOne("employee_db_op.selectEmployeeHashMap", 1);
+        Map<String, Object> employee = empMapper.selectEmployeeHashMap(1);
         System.out.println(employee);
     }
 }

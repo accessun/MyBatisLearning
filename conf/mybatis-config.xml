@@ -23,7 +23,7 @@
   </environments>
 
   <mappers>
-    <mapper resource="EmployeeMapper.xml" />
+    <mapper class="io.github.accessun.entity.EmployeeMapper" />
     <mapper resource="BlogMapper.xml" />
   </mappers>
 
