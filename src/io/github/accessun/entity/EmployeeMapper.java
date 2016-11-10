@@ -3,9 +3,11 @@ package io.github.accessun.entity;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface EmployeeMapper {
     
-    List<Employee> selectEmployees(String city);
+    List<Employee> selectEmployees(@Param("city") String city);
     
     Employee selectEmployee();
     

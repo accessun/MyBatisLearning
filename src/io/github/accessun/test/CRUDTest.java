@@ -70,7 +70,7 @@ public class CRUDTest {
 
     @Test
     public void testBatchDelete() {
-        empMapper.deleteBatch(Arrays.asList(4, 6));
+        empMapper.deleteBatch(Arrays.asList(6, 8));
         sqlSession.commit();
     }
     
@@ -79,19 +79,18 @@ public class CRUDTest {
         Employee parameter = new Employee();
         parameter.setId(1);
         parameter.setAge(25);
-        sqlSession.update("employee_db_op.updateEmployeeSet", parameter);
         empMapper.updateEmployeeSet(parameter);
         sqlSession.commit();
     }
     
     @Test
     public void testSelectIn() {
-        System.out.println(empMapper.selectEmployeeIn(Arrays.asList(1, 3, 5)));
+        System.out.println(empMapper.selectEmployeeIn(Arrays.asList(1, 3, 7)));
     }
     
     @Test
     public void testSelectBind() {
-        System.out.println(empMapper.selectEmployeeBind("om"));
+        System.out.println(empMapper.selectEmployeeBind("am"));
     }
     
     @Test
