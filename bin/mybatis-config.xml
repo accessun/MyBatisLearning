@@ -24,7 +24,7 @@
 
   <mappers>
     <mapper class="io.github.accessun.entity.EmployeeMapper" />
-    <mapper resource="BlogMapper.xml" />
+    <mapper class="io.github.accessun.entity.BlogMapper" />
   </mappers>
 
 </configuration>

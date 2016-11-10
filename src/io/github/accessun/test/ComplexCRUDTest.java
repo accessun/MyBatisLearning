@@ -6,15 +6,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.github.accessun.entity.Blog;
+import io.github.accessun.entity.BlogMapper;
 import io.github.accessun.utils.MyBatisUtils;
 
 public class ComplexCRUDTest {
 
     private SqlSession sqlSession = null;
+    private BlogMapper blogMapper = null;
     
     @Before
     public void setUp() throws Exception {
         sqlSession = MyBatisUtils.getSession();
+        blogMapper = sqlSession.getMapper(BlogMapper.class);
     }
 
     @After
@@ -24,7 +27,7 @@ public class ComplexCRUDTest {
 
     @Test
     public void testSelectBlog() {
-        Blog blog = sqlSession.selectOne("blog_db_op.selectBlog", 2);
+        Blog blog = blogMapper.selectBlog(2);
         System.out.println(blog);
     }
 
