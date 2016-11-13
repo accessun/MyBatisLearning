@@ -1,4 +1,4 @@
-package io.github.accessun.test;
+package io.github.accessun.demo;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;

@@ -1,4 +1,4 @@
-package io.github.accessun.test;
+package io.github.accessun.demo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
