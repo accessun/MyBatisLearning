@@ -1,0 +1,5 @@
+*.class
+
+bin/*.properties
+bin/*.xml
+bin/*.txt
