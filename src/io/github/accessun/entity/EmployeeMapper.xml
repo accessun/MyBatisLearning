@@ -3,20 +3,38 @@
 
 <mapper namespace="io.github.accessun.entity.EmployeeMapper">
 
-  <resultMap type="Employee" id="EmployeeResult">
-    <id column="ID" jdbcType="INTEGER" property="id" /> <!-- java.sql.Types -->
+  <resultMap type="io.github.accessun.entity.Department" id="departmentResultMap">
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="DEPT_ID" property="deptId" jdbcType="INTEGER" />
+    <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+    <result column="LOCATION" property="location" jdbcType="VARCHAR" />
+    <association property="manager" select="selectEmployeeByEmpId" column="MANAGER_ID"></association>
+  </resultMap>
+
+  <resultMap type="io.github.accessun.entity.Employee" id="employeeResultMap">
+    <id column="ID" property="id" jdbcType="INTEGER" /> <!-- java.sql.Types -->
     <!-- property : You can map to something simple like: username, or to something more complicated like: address.street.number. -->
     <!-- jdbcType: The JDBC type is only required for nullable columns upon insert, update or delete. (java.sql.Types.*) -->
     <!-- javaType: A fully qualified Java class name, or a type alias (see the table above for the list of built-in type 
       aliases). MyBatis can usually figure out the type if you're mapping to a JavaBean. However, if you are mapping to a HashMap, 
       then you should specify the javaType explicitly to ensure the desired behavior. -->
-    <result column="NAME" jdbcType="VARCHAR" property="name" />
-    <result column="GENDER" jdbcType="VARCHAR" property="gender" />
-    <result column="SALARY" jdbcType="INTEGER" property="salary" />
-    <result column="AGE" jdbcType="INTEGER" property="age" />
-    <result column="CITY" jdbcType="VARCHAR" property="city" />
-    <result column="DEPT_ID" jdbcType="INTEGER" property="deptId" />
+    <result column="EMP_ID" property="empId" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="GENDER" property="gender" jdbcType="VARCHAR" />
+    <result column="AGE" property="age" jdbcType="INTEGER" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="SALARY" property="salary" jdbcType="INTEGER" />
+    <result column="DATE_OF_BIRTH" property="dateOfBirth" jdbcType="DATE" />
+    <association property="department" resultMap="departmentResultMap"></association>
   </resultMap>
+
+  <select id="selectEmployeeByEmpId" resultMap="employeeResultMap">
+    SELECT * FROM EMPLOYEES WHERE EMP_ID = #{empId}
+  </select>
+  
+  <select id="selectDepartmentByDeptId" resultMap="departmentResultMap">
+    SELECT * FROM DEPARTMENTS WHERE DEPT_ID = #{deptId}
+  </select>
 
   <select id="selectEmployees" resultMap="EmployeeResult">
     SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees` WHERE ID &lt; 10
