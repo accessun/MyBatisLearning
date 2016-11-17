@@ -1,19 +1,44 @@
 package io.github.accessun.utils;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import org.apache.commons.io.IOUtils;
 
 public class MyRandomUtils {
 
     private static List<String> EMAIL_SERVICES;
+    private static List<Map<String, String>> firstNamesWithGender;
+    private static List<String> lastNames;
 
     static {
         EMAIL_SERVICES = Arrays.asList("@gmail.com", "@hotmail.com", "@outlook.com", "@yahoo.com", "@mail.com");
+        try {
+            firstNamesWithGender = new ArrayList<>();
+            lastNames = IOUtils.readLines(MyRandomUtils.class.getResourceAsStream("lastNames.txt"));
+            
+            List<String> listReadIn = IOUtils.readLines(MyRandomUtils.class.getResourceAsStream("names_with_gender.txt"));
+            
+            listReadIn.stream().forEach(line -> {
+                String[] nameAndGender = line.split("\\s+");
+                Map<String, String> personNameWithGender = new HashMap<>();
+                personNameWithGender.put(nameAndGender[0], nameAndGender[1]);
+                firstNamesWithGender.add(personNameWithGender);
+            });
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -68,23 +93,35 @@ public class MyRandomUtils {
         return new Date(gc.getTimeInMillis());
     }
 
-    public static List<String> randomFirstNames() {
-        return randomNames("first");
+    public static List<Map<String, String>> randomFirstNamesWithGender(int number) {
+        synchronized (MyRandomUtils.class) {
+            Collections.shuffle(firstNamesWithGender);
+        }
+        if (number <= 0 || number > lastNames.size()) {
+            return new ArrayList<>();
+        }
+        return firstNamesWithGender.subList(0, number);
     }
 
-    public static List<String> randomLastNames() {
-        return randomNames("last");
+    public static List<String> randomLastNames(int number) {
+        synchronized (MyRandomUtils.class) {
+            Collections.shuffle(lastNames);
+        }
+        if (number <= 0 || number > lastNames.size())
+            return new ArrayList<>();
+        return lastNames.subList(0, number);
+    }
+    
+    public static String randomLastName() {
+        int index = randomInt(0, lastNames.size());
+        return lastNames.get(index);
     }
 
-    public static List<String> randomFullNames() {
-        return randomNames("full");
-    }
-
-    private static List<String> randomNames(String type) {
+    public static List<String> randomFullNamesWithGender() {
         return null;
     }
 
-    public static String randomEmail(String fullName) {
+    public static String randomEmail(String name) {
         return null;
     }
 
