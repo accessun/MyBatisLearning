@@ -8,7 +8,7 @@
     <result column="DEPT_ID" property="deptId" jdbcType="INTEGER" />
     <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
     <result column="LOCATION" property="location" jdbcType="VARCHAR" />
-    <association property="manager" select="selectEmployeeByEmpId" column="MANAGER_ID"></association>
+<!--     <association property="manager" select="selectEmployeeByEmpId" column="MANAGER_ID"></association> -->
   </resultMap>
 
   <resultMap type="io.github.accessun.entity.Employee" id="employeeResultMap">
@@ -27,6 +27,14 @@
     <result column="DATE_OF_BIRTH" property="dateOfBirth" jdbcType="DATE" />
     <association property="department" resultMap="departmentResultMap"></association>
   </resultMap>
+  
+  <select id="selectDepartmentCount" resultType="int">
+    select count(1) from departments
+  </select>
+  
+  <select id="selectDepartments" resultMap="departmentResultMap">
+    select * from departments limit #{number}
+  </select>
 
   <select id="selectEmployeeByEmpId" resultMap="employeeResultMap">
     SELECT * FROM EMPLOYEES WHERE EMP_ID = #{empId}
@@ -36,7 +44,7 @@
     SELECT * FROM DEPARTMENTS WHERE DEPT_ID = #{deptId}
   </select>
 
-  <select id="selectEmployees" resultMap="EmployeeResult">
+  <select id="selectEmployees" resultMap="employeeResultMap">
     SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees` WHERE ID &lt; 10
     <if test="city != null and !&quot;&quot;.equals(city.trim())">
       AND CITY = #{city} <!-- #{city} is gotten from the Employee object passed in -->
@@ -47,12 +55,12 @@
     is optional because MyBatis can calculate the TypeHandler to use out of the actual parameter passed to the statement. Default 
     is unset. -->
 
-  <select id="selectEmployee" parameterType="Employee" resultMap="EmployeeResult">
+  <select id="selectEmployee" parameterType="Employee" resultMap="employeeResultMap">
     SELECT ID, NAME, GENDER, SALARY, AGE, CITY,
     DEPT_ID FROM `employees` WHERE ID = 1
   </select>
 
-  <select id="selectEmployeeWhen" parameterType="Employee" resultMap="EmployeeResult">
+  <select id="selectEmployeeWhen" parameterType="Employee" resultMap="employeeResultMap">
     SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees` WHERE 1 = 1
     <choose>
       <when test="name != null and !&quot;&quot;.equals(name.trim())">
@@ -70,7 +78,7 @@
   <!-- The where element knows to only insert "WHERE" if there is any content returned -->
   <!-- by the containing tags. Furthermore, if that content begins with "AND" or "OR", -->
   <!-- it knows to strip it off. -->
-  <select id="selectEmployeeWhere" parameterType="Employee" resultMap="EmployeeResult">
+  <select id="selectEmployeeWhere" parameterType="Employee" resultMap="employeeResultMap">
     SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees`
     <where>
       <if test="name != null">NAME = #{name}</if>
@@ -79,7 +87,7 @@
     </where>
   </select>
 
-  <select id="selectEmployeeIn" resultMap="EmployeeResult">
+  <select id="selectEmployeeIn" resultMap="employeeResultMap">
     SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees`
     WHERE ID IN
     <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
@@ -87,7 +95,7 @@
     </foreach>
   </select>
 
-  <select id="selectEmployeeBind" parameterType="string" resultMap="EmployeeResult">
+  <select id="selectEmployeeBind" parameterType="string" resultMap="employeeResultMap">
     <bind name="pattern" value="'%' + _parameter + '%'" />
     SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees`
     WHERE NAME LIKE #{pattern}

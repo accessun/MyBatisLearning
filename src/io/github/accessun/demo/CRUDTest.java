@@ -1,5 +1,8 @@
 package io.github.accessun.demo;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import io.github.accessun.entity.Department;
 import io.github.accessun.entity.Employee;
 import io.github.accessun.entity.EmployeeMapper;
 import io.github.accessun.utils.MyBatisUtils;
@@ -18,7 +22,8 @@ public class CRUDTest {
 
     private SqlSession sqlSession = null;
     private EmployeeMapper empMapper = null;
-
+    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    
     @Before
     public void setUp() {
         sqlSession = MyBatisUtils.getSession();
@@ -98,8 +103,6 @@ public class CRUDTest {
         Employee employee = new Employee();
         employee.setName("Steve");
         employee.setAge(32);
-        employee.setCity("Los Angeles");
-        employee.setDeptId(5);
         employee.setGender("male");
         employee.setSalary(8700);
         empMapper.insertEmployee(employee);
@@ -107,16 +110,22 @@ public class CRUDTest {
     }
     
     @Test
-    public void testInsertMultiRow() {
-        Employee employee1 = new Employee("Cook", "male", 8900, 21, "Shanghai", 1);
-        Employee employee2 = new Employee("Agnes", "female", 7000, 24, "Shanghai", 4);
-        Employee employee3 = new Employee("Anna", "female", 7800, 25, "Beijing", 3);
+    public void testInsertMultiRow() throws ParseException {
         
+        List<Department> departments = empMapper.selectDepartments(3);
+        
+        Employee employee1 = new Employee(15101, "Tom Cook", "male", 65, "tom-cook_5bh11@example.com", 30000,
+                formatter.parse("1985-05-05"), departments.get(0));
+        Employee employee2 = new Employee(15101, "Agnes Anderson", "female", 31, "agnes-anderson_98u12@example.com", 15000,
+                formatter.parse("1985-05-05"), departments.get(1));
+        Employee employee3 = new Employee(15101, "Anna White", "female", 28, "anna-white_09udf@example.com", 12000,
+                formatter.parse("1985-05-05"), departments.get(3));
+
         List<Employee> employeesToInsert = new ArrayList<>();
         employeesToInsert.add(employee1);
         employeesToInsert.add(employee2);
         employeesToInsert.add(employee3);
-        
+
         empMapper.insertEmployeeMultiRow(employeesToInsert);
         sqlSession.commit();
     }

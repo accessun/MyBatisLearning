@@ -7,6 +7,10 @@ import org.apache.ibatis.annotations.Param;
 
 public interface EmployeeMapper {
     
+    int selectDepartmentCount();
+    
+    List<Department> selectDepartments(int number);
+    
     List<Employee> selectEmployees(@Param("city") String city);
     
     Employee selectEmployee();
