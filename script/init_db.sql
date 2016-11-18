@@ -13,21 +13,30 @@ drop table if exists departments;
 
 create table departments (
     id int unsigned not null auto_increment,
+    dept_id int unsigned not null unique,
     dept_name varchar(30) not null,
+    location varchar(30),
+    manager_id int unsigned,
     primary key (id)
 ) engine=innodb default charset=utf8;
 
+alter table departments add unique (dept_id);
+
 create table employees (
     id int unsigned not null auto_increment,
+    emp_id int unsigned not null unique,
     name varchar(30) not null,
     gender enum('female', 'male'),
-    salary int(8),
-    age int(3),
-    city varchar(30),
-    dept_id int unsigned,
+    age int(3) unsigned,
+    email varchar(50),
+    salary int(8) unsigned,
+    date_of_birth date,
+    dept_id int unsigned not null,
     primary key (id),
-    foreign key (dept_id) references departments(id)
+    foreign key (dept_id) references departments(dept_id)
 ) engine=innodb default charset=utf8;
+
+alter table employees add unique (emp_id);
 
 create table authors (
     id int unsigned not null auto_increment,
@@ -47,18 +56,21 @@ create table blogs (
 ) engine=innodb default charset=utf8;
 
 ## inert test data
-insert into departments (dept_name) values
-('IT'), ('Accounting'), ('PR'), ('HR'), ('Marketing'), ('Support');
+insert into departments (dept_id, dept_name, location, manager_id) values
+(1001, 'IT', 'Seattle', 15004),
+(1002, 'Accounting', 'Seattle', 15005),
+(1003, 'PR', 'New York', 15001),
+(1004, 'HR', 'New York', 15006),
+(1005, 'Marketing', 'New York', 15002),
+(1006, 'Support', 'Seattle', 15003);
 
-insert into employees (name, gender, salary, age, city, dept_id) values
-('Adam', 'male', 8000, 20, 'New York', 6),
-('Abraham', 'male', 9500, 25, 'New York', 6),
-('Bob', 'male', 7000, 22, 'London', 3),
-('Carol', 'female', 10000, 26, 'Tokyo', 2),
-('Dale', 'male', 9600, 23, 'New York', 1),
-('Tom', 'male', 12500, 28, 'Beijing', 1),
-('Mary', 'female', 9600, 28, 'Edmonton', 4),
-('Vivian', 'female', 7500, 23, 'Ontario', 5);
+insert into employees (emp_id, name, gender, salary, age, email, date_of_birth, dept_id) values
+(15001, 'Adam Smith', 'male', 8000, 20, 'adam-smith_37ec3@example.com', str_to_date('1985-08-08', '%Y-%m-%d'), 1006),
+(15002, 'Robert Allen', 'male', 7000, 22, 'robert-allen_200ef@example.com', str_to_date('1982-08-08', '%Y-%m-%d'), 1003),
+(15003, 'Carol Morris', 'female', 10000, 26, 'carol-morris_f380b@example.com', str_to_date('1989-08-08', '%Y-%m-%d'), 1002),
+(15004, 'Dale Reed', 'male', 9600, 23, 'dale-reed_465f5@example.com', str_to_date('1985-08-08', '%Y-%m-%d'), 1001),
+(15005, 'Mary Coleman', 'female', 9600, 28, 'mary-coleman_ea8d5@example.com', str_to_date('1986-08-08', '%Y-%m-%d'), 1004),
+(15006, 'Vivian Jenkins', 'female', 7500, 23, 'vivian-jenkins_6ca7b@example.com', str_to_date('1981-08-08', '%Y-%m-%d'), 1005);
 
 insert into authors (username, password, email, bio) values
 ('hikerAA', 'dsa22das8@', 'tias2@example.com', 'Stay foolish'),
