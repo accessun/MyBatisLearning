@@ -4,68 +4,79 @@
 <mapper namespace="io.github.accessun.entity.EmployeeMapper">
 
   <resultMap type="Department" id="departmentResultMap">
-    <id column="ID" property="id" jdbcType="INTEGER" />
-    <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
-    <result column="LOCATION" property="location" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
     <!-- <association property="manager" select="selectEmployeeByEmpId" column="MANAGER_ID"></association> -->
   </resultMap>
 
   <resultMap type="Employee" id="employeeResultMap">
-    <id column="ID" property="id" jdbcType="INTEGER" /> <!-- java.sql.Types -->
+    <id column="id" property="id" jdbcType="INTEGER" /> <!-- java.sql.Types -->
     <!-- property : You can map to something simple like: username, or to something more complicated like: address.street.number. -->
     <!-- jdbcType: The JDBC type is only required for nullable columns upon insert, update or delete. (java.sql.Types.*) -->
     <!-- javaType: A fully qualified Java class name, or a type alias (see the table above for the list of built-in type 
       aliases). MyBatis can usually figure out the type if you're mapping to a JavaBean. However, if you are mapping to a HashMap, 
       then you should specify the javaType explicitly to ensure the desired behavior. -->
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="GENDER" property="gender" jdbcType="VARCHAR" />
-    <result column="AGE" property="age" jdbcType="INTEGER" />
-    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
-    <result column="SALARY" property="salary" jdbcType="INTEGER" />
-    <result column="DATE_OF_BIRTH" property="dateOfBirth" jdbcType="DATE" />
+    <result column="emp_name" property="name" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="INTEGER" />
+    <result column="date_of_birth" property="dateOfBirth" jdbcType="DATE" />
     <association property="department" resultMap="departmentResultMap"></association>
   </resultMap>
   
+  <!-- Demonstration of static SQL -->
+  
   <select id="selectDepartmentCount" resultType="int">
-    select count(1) from departments
+    SELECT COUNT(*) FROM departments
   </select>
   
   <select id="selectDepartments" resultMap="departmentResultMap">
-    select * from departments limit #{number}
+    SELECT * FROM departments LIMIT #{number}
   </select>
 
-  <select id="selectEmployeeByEmpId" resultMap="employeeResultMap">
-    SELECT * FROM EMPLOYEES WHERE EMP_ID = #{empId}
+  <select id="selectEmployeeById" resultMap="employeeResultMap">
+    SELECT * FROM employees WHERE ID = #{id}
   </select>
   
   <select id="selectDepartmentByDeptId" resultMap="departmentResultMap">
-    SELECT * FROM DEPARTMENTS WHERE DEPT_ID = #{deptId}
+    SELECT * FROM departments WHERE ID = #{id}
   </select>
 
-  <select id="selectEmployees" resultMap="employeeResultMap">
-    SELECT * FROM employees WHERE 1 = 1
-    <if test="gender != null and !&quot;&quot;.equals(gender.trim())">
-      AND gender = #{gender}
-    </if>
+  <select id="selectEmployeeIntoHashMap" resultType="hashmap">
+    SELECT * FROM employees WHERE ID = #{id}
   </select>
+  
+  <select id="selectAllEmployeeIds" resultType="integer">
+    SELECT ID FROM employees
+  </select>
+
+  <delete id="deleteOne" parameterType="int">
+    DELETE FROM employees WHERE ID = #{id}
+  </delete>
 
   <!-- The fully qualified class name or alias for the parameter that will be passed into this statement. This attribute 
     is optional because MyBatis can calculate the TypeHandler to use out of the actual parameter passed to the statement. Default 
     is unset. -->
+  
+  <!-- Demonstration of dynamic SQL -->
 
-  <select id="selectEmployee" parameterType="Employee" resultMap="employeeResultMap">
-    SELECT ID, NAME, GENDER, SALARY, AGE, CITY,
-    DEPT_ID FROM `employees` WHERE ID = 1
+  <select id="selectEmployeesByGender" resultMap="employeeResultMap">
+    SELECT * FROM employees WHERE 1 = 1
+    <if test="gender != null">
+      AND gender = #{gender}
+    </if>
   </select>
 
-  <select id="selectEmployeeByNameAndGender" parameterType="Employee" resultMap="employeeResultMap">
+  <select id="selectEmployeeByGenderAndName" parameterType="Employee" resultMap="employeeResultMap">
     SELECT * FROM employees WHERE 1 = 1
     <choose>
-      <when test="name != null and !&quot;&quot;.equals(name.trim())">
-        AND NAME = #{name}
-      </when>
-      <when test="gender != null and !&quot;&quot;.equals(gender.trim())">
+      <when test="gender != null">
         AND GENDER = #{gender}
+      </when>
+      <when test="name != null and !&quot;&quot;.equals(name.trim())">
+        AND emp_name = #{name}
       </when>
       <otherwise>
         LIMIT 10
@@ -76,10 +87,10 @@
   <!-- The where element knows to only insert "WHERE" if there is any content returned -->
   <!-- by the containing tags. Furthermore, if that content begins with "AND" or "OR", -->
   <!-- it knows to strip it off. -->
-  <select id="selectEmployeeWhere" parameterType="Employee" resultMap="employeeResultMap">
-    SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees`
+  <select id="selectEmployeByConditions" parameterType="Employee" resultMap="employeeResultMap">
+    SELECT * FROM employees
     <where>
-      <if test="name != null">NAME = #{name}</if>
+      <if test="name != null">emp_name = #{name}</if>
       <if test="gender != null">AND GENDER = #{gender}</if>
       <if test="age != 0">AND AGE &lt; 30</if>
     </where>
@@ -93,48 +104,32 @@
     </foreach>
   </select>
 
-  <select id="selectEmployeeBind" parameterType="string" resultMap="employeeResultMap">
-    <bind name="pattern" value="'%' + _parameter + '%'" />
-    SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees`
-    WHERE NAME LIKE #{pattern}
-  </select>
-
-  <select id="selectEmployeeIntoHashMap" resultType="hashmap">
-    SELECT * FROM `employees` WHERE ID = #{id}
-  </select>
-
-  <insert id="insertEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+  <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
     INSERT
-    INTO `employees` (NAME, AGE, CITY, DEPT_ID, GENDER, SALARY)
-    VALUES (#{name}, #{age}, #{city}, #{deptId}, #{gender},
-    #{salary})
+    INTO employees (emp_name, gender, age, email, salary, date_of_birth, dept_id)
+    VALUES (#{name}, #{gender}, #{age}, #{email}, #{salary}, #{dateOfBirth}, #{deptId})
   </insert>
 
-  <insert id="insertEmployeeMultiRow" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO `employees` (NAME, AGE, CITY, DEPT_ID, GENDER, SALARY) VALUES
+  <insert id="insertEmployees" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+    INSERT INTO employees (emp_name, gender, age, email, salary, date_of_birth, dept_id) VALUES
     <foreach collection="list" item="item" separator=",">
-      (#{item.name}, #{item.age}, #{item.city}, #{item.deptId},
-      #{item.gender}, #{item.salary})
+      (#{item.name}, #{item.gender}, #{item.age}, #{item.email}, #{item.salary},
+      #{item.dateOfBirth}, #{item.deptId})
     </foreach>
   </insert>
 
-  <delete id="deleteOne" parameterType="int">
-    DELETE FROM `employees` WHERE ID = #{id}
-  </delete>
-
-  <delete id="deleteBatch" parameterType="java.util.List">
-    DELETE FROM `employees` WHERE ID IN (
-    <foreach collection="list" item="item" separator=",">
+  <delete id="deleteEmployeesByIds">
+    DELETE FROM employees WHERE ID IN
+    <foreach collection="list" item="item" open="(" close=")" separator=",">
       #{item}
     </foreach>
-    )
   </delete>
 
-  <update id="updateEmployeeSet" parameterType="Employee">
-    UPDATE `employees`
+  <update id="updateEmployeeInfosById">
+    UPDATE employees
     <set>
       <if test="name != null and !&quot;&quot;.equals(name.trim())">
-        NAME = #{name},
+        emp_name = #{name},
       </if>
       <if test="age != 0">
         AGE = AGE + 1
@@ -142,5 +137,11 @@
     </set>
     WHERE ID = #{id}
   </update>
+
+  <select id="selectEmployeeByNamePattern" resultMap="employeeResultMap">
+    <bind name="pattern" value="'%' + _parameter + '%'" />
+    SELECT * FROM employees
+    WHERE NAME LIKE #{pattern}
+  </select>
 
 </mapper>

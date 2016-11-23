@@ -23,7 +23,7 @@ CREATE TABLE departments (
 
 CREATE TABLE employees (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    NAME VARCHAR(30) NOT NULL,
+    emp_name VARCHAR(30) NOT NULL,
     gender ENUM('female', 'male'),
     age INT(3) UNSIGNED,
     email VARCHAR(50),
@@ -69,7 +69,7 @@ VALUES
 
 
 INSERT INTO employees (
-  NAME,
+  emp_name,
   gender,
   salary,
   age,
