@@ -85,7 +85,7 @@ VALUES
     20,
     'adam-smith_37ec3@example.com',
     STR_TO_DATE('1985-08-08', '%Y-%m-%d'),
-    1006
+    6
   ),
   (
     'Robert Allen',
@@ -94,7 +94,7 @@ VALUES
     22,
     'robert-allen_200ef@example.com',
     STR_TO_DATE('1982-08-08', '%Y-%m-%d'),
-    1003
+    3
   ),
   (
     'Carol Morris',
@@ -103,7 +103,7 @@ VALUES
     26,
     'carol-morris_f380b@example.com',
     STR_TO_DATE('1989-08-08', '%Y-%m-%d'),
-    1002
+    2
   ),
   (
     'Dale Reed',
@@ -112,7 +112,7 @@ VALUES
     23,
     'dale-reed_465f5@example.com',
     STR_TO_DATE('1985-08-08', '%Y-%m-%d'),
-    1001
+    1
   ),
   (
     'Mary Coleman',
@@ -121,7 +121,7 @@ VALUES
     28,
     'mary-coleman_ea8d5@example.com',
     STR_TO_DATE('1986-08-08', '%Y-%m-%d'),
-    1004
+    4
   ),
   (
     'Vivian Jenkins',
@@ -130,7 +130,7 @@ VALUES
     23,
     'vivian-jenkins_6ca7b@example.com',
     STR_TO_DATE('1981-08-08', '%Y-%m-%d'),
-    1005
+    5
   );
 
 
