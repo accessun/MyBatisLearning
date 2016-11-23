@@ -60,12 +60,12 @@ INSERT INTO departments (
   manager_id
 ) 
 VALUES
-  ('IT', 'Seattle', 15004),
-  ('Accounting', 'Seattle', 15005),
-  ('PR', 'New York', 15001),
-  ('HR', 'New York', 15006),
-  ('Marketing', 'New York', 15002),
-  ('Support', 'Seattle', 15003);
+  ('IT', 'Seattle', 4),
+  ('Accounting', 'Seattle', 5),
+  ('PR', 'New York', 1),
+  ('HR', 'New York', 6),
+  ('Marketing', 'New York', 2),
+  ('Support', 'Seattle', 3);
 
 
 INSERT INTO employees (
