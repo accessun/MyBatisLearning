@@ -52,7 +52,7 @@
     SELECT ID FROM employees
   </select>
 
-  <delete id="deleteOne" parameterType="int">
+  <delete id="deleteEmployeeById">
     DELETE FROM employees WHERE ID = #{id}
   </delete>
 
@@ -69,7 +69,7 @@
     </if>
   </select>
 
-  <select id="selectEmployeeByGenderAndName" parameterType="Employee" resultMap="employeeResultMap">
+  <select id="selectEmployeesByGenderAndName" resultMap="employeeResultMap">
     SELECT * FROM employees WHERE 1 = 1
     <choose>
       <when test="gender != null">
@@ -87,7 +87,7 @@
   <!-- The where element knows to only insert "WHERE" if there is any content returned -->
   <!-- by the containing tags. Furthermore, if that content begins with "AND" or "OR", -->
   <!-- it knows to strip it off. -->
-  <select id="selectEmployeByConditions" parameterType="Employee" resultMap="employeeResultMap">
+  <select id="selectEmployeesByConditions" resultMap="employeeResultMap">
     SELECT * FROM employees
     <where>
       <if test="name != null">emp_name = #{name}</if>
@@ -140,8 +140,7 @@
 
   <select id="selectEmployeeByNamePattern" resultMap="employeeResultMap">
     <bind name="pattern" value="'%' + _parameter + '%'" />
-    SELECT * FROM employees
-    WHERE NAME LIKE #{pattern}
+    SELECT * FROM employees WHERE emp_name LIKE #{pattern}
   </select>
 
 </mapper>

@@ -3,36 +3,39 @@ package io.github.accessun.entity;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
-
 public interface EmployeeMapper {
     
     int selectDepartmentCount();
     
     List<Department> selectDepartments(int number);
     
-    List<Employee> selectEmployees(@Param("city") String city);
+    Employee selectEmployeeById(Integer id);
+
+    Department selectDepartmentByDeptId(Integer id);
     
-    Employee selectEmployee();
+    Map<String, Object> selectEmployeeIntoHashMap(Integer id);
     
-    List<Employee> selectEmployeeWhen(Employee employee);
+    List<Integer> selectAllEmployeeIds();
     
-    List<Employee> selectEmployeeWhere(Employee employee);
+    void deleteEmployeeById(Integer id);
     
-    List<Employee> selectEmployeeIn(List<Integer> ids);
     
-    List<Employee> selectEmployeeBind(String pattern);
+    List<Employee> selectEmployeesByGender(Employee emp);
     
-    Map<String, Object> selectEmployeeHashMap(Integer id);
+    List<Employee> selectEmployeesByGenderAndName(Employee emp);
+    
+    List<Employee> selectEmployeesByConditions(Employee emp);
+    
+    List<Employee> selectEmployeesByIds(List<Integer> ids);
     
     void insertEmployee(Employee employee);
     
-    void insertEmployeeMultiRow(List<Employee> employees);
+    void insertEmployees(List<Employee> employees);
     
-    void deleteOne(Integer id);
+    void deleteEmployeesByIds(List<Integer> ids);
     
-    void deleteBatch(List<Integer> ids);
+    void updateEmployeeInfosById(Employee emp);
     
-    void updateEmployeeSet(Employee employee);
-
+    List<Employee> selectEmployeeByNamePattern(String paramPattern);
+    
 }
