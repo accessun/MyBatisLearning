@@ -117,7 +117,9 @@ public class MyRandomUtils {
 
     public static List<PersonName> randomNames(int size) {
         int num = size < NAMES.size() ? size : NAMES.size();
-        Collections.shuffle(NAMES);
+        synchronized (MyRandomUtils.class) {
+            Collections.shuffle(NAMES);
+        }
         return NAMES.subList(0, num);
     }
 
