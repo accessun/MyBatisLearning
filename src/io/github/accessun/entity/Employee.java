@@ -1,5 +1,7 @@
 package io.github.accessun.entity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Employee {
@@ -93,8 +95,11 @@ public class Employee {
 
     @Override
     public String toString() {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDateOfBirth = format.format(dateOfBirth);
+
         return "Employee [id=" + id + ", name=" + name + ", gender=" + gender + ", age=" + age + ", email=" + email
-                + ", salary=" + salary + ", dateOfBirth=" + dateOfBirth + ", department=" + department + "]";
+                + ", salary=" + salary + ", dateOfBirth=" + formattedDateOfBirth + ", department=" + department + "]";
     }
 
 }

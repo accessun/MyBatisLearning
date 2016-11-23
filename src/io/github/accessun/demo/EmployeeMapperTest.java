@@ -4,10 +4,14 @@ import static org.junit.Assert.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
+import io.github.accessun.entity.Department;
+import io.github.accessun.entity.Employee;
 import io.github.accessun.entity.EmployeeMapper;
 import io.github.accessun.utils.MyBatisUtils;
 
@@ -20,7 +24,8 @@ public class EmployeeMapperTest {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
-        
+        int count = mapper.selectDepartmentCount();
+        System.out.println("selectDepartmentCount => " + count);
         
         session.close();
     }
@@ -30,7 +35,9 @@ public class EmployeeMapperTest {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
-        
+        List<Department> depts =  mapper.selectDepartments(3);
+        System.out.println("selectDepartments =>");
+        depts.stream().forEach(System.out::println);
         
         session.close();
     }
@@ -40,7 +47,8 @@ public class EmployeeMapperTest {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
-        
+        Employee employee = mapper.selectEmployeeById(1);
+        System.out.println("selectEmployeeById =>\n" + employee);
         
         session.close();
     }
@@ -50,7 +58,8 @@ public class EmployeeMapperTest {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
-        
+        Department department = mapper.selectDepartmentByDeptId(1);
+        System.out.println("selectDepartmentByDeptId =>\n" + department);
         
         session.close();
     }
@@ -60,7 +69,8 @@ public class EmployeeMapperTest {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
-        
+        Map<String, Object> empMap = mapper.selectEmployeeIntoHashMap(1);
+        System.out.println("selectEmployeeIntoHashMap =>\n" + empMap);
         
         session.close();
     }
@@ -70,7 +80,8 @@ public class EmployeeMapperTest {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
-        
+        List<Integer> ids = mapper.selectAllEmployeeIds();
+        System.out.println("selectAllEmployeeIds => " + ids);
         
         session.close();
     }
@@ -80,19 +91,32 @@ public class EmployeeMapperTest {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
+        mapper.deleteEmployeeById(2);
         
-        
+        session.commit();
         session.close();
     }
 
     @Test
     public void testSelectEmployeesByGender() {
-        fail("Not yet implemented");        SqlSession session = MyBatisUtils.getSession();
+        SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
+        Employee emp = new Employee();
         
+        // case 1: gender is null
+        List<Employee> employees = mapper.selectEmployeesByGender(emp);
+        System.out.println("selectEmployeesByGender (gender not set) =>");
+        employees.stream().forEach(System.out::println);
         
-        session.close();    }
+        // case 2: gender is set
+        emp.setGender("female");
+        System.out.println("selectEmployeesByGender (gender is set) =>");
+        employees = mapper.selectEmployeesByGender(emp);
+        employees.stream().forEach(System.out::println);
+        
+        session.close();
+    }
 
     @Test
     public void testSelectEmployeesByGenderAndName() {
