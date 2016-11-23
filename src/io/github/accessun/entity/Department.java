@@ -2,17 +2,16 @@ package io.github.accessun.entity;
 
 public class Department {
     private Integer id;
-    private Integer deptId;
     private String deptName;
     private String location;
     private Employee manager;
 
-    public Integer getDeptId() {
-        return deptId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setDeptId(Integer deptId) {
-        this.deptId = deptId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getDeptName() {
@@ -42,9 +41,8 @@ public class Department {
     public Department() {
     }
 
-    public Department(Integer deptId, String deptName, String location, Employee manager) {
+    public Department(String deptName, String location, Employee manager) {
         super();
-        this.deptId = deptId;
         this.deptName = deptName;
         this.location = location;
         this.manager = manager;
@@ -52,8 +50,8 @@ public class Department {
 
     @Override
     public String toString() {
-        return "Department [id=" + id + ", deptId=" + deptId + ", deptName=" + deptName + ", location=" + location
-                + ", manager=" + manager + "]";
+        return "Department [id=" + id + ", deptName=" + deptName + ", location=" + location + ", manager=" + manager
+                + "]";
     }
 
 }

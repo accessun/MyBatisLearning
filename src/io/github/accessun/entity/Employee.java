@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Employee {
     private Integer id;
-    private Integer empId;
     private String name;
     private String gender;
     private int age;
@@ -19,14 +18,6 @@ public class Employee {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(Integer empId) {
-        this.empId = empId;
     }
 
     public String getName() {
@@ -88,10 +79,9 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Integer empId, String name, String gender, int age, String email, int salary, Date dateOfBirth,
+    public Employee(String name, String gender, int age, String email, int salary, Date dateOfBirth,
             Department department) {
         super();
-        this.empId = empId;
         this.name = name;
         this.gender = gender;
         this.age = age;
@@ -103,9 +93,8 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee [id=" + id + ", empId=" + empId + ", name=" + name + ", gender=" + gender + ", age=" + age
-                + ", email=" + email + ", salary=" + salary + ", dateOfBirth=" + dateOfBirth + ", department="
-                + department + "]";
+        return "Employee [id=" + id + ", name=" + name + ", gender=" + gender + ", age=" + age + ", email=" + email
+                + ", salary=" + salary + ", dateOfBirth=" + dateOfBirth + ", department=" + department + "]";
     }
 
 }

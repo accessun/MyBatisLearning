@@ -3,22 +3,20 @@
 
 <mapper namespace="io.github.accessun.entity.EmployeeMapper">
 
-  <resultMap type="io.github.accessun.entity.Department" id="departmentResultMap">
+  <resultMap type="Department" id="departmentResultMap">
     <id column="ID" property="id" jdbcType="INTEGER" />
-    <result column="DEPT_ID" property="deptId" jdbcType="INTEGER" />
     <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
     <result column="LOCATION" property="location" jdbcType="VARCHAR" />
-<!--     <association property="manager" select="selectEmployeeByEmpId" column="MANAGER_ID"></association> -->
+    <!-- <association property="manager" select="selectEmployeeByEmpId" column="MANAGER_ID"></association> -->
   </resultMap>
 
-  <resultMap type="io.github.accessun.entity.Employee" id="employeeResultMap">
+  <resultMap type="Employee" id="employeeResultMap">
     <id column="ID" property="id" jdbcType="INTEGER" /> <!-- java.sql.Types -->
     <!-- property : You can map to something simple like: username, or to something more complicated like: address.street.number. -->
     <!-- jdbcType: The JDBC type is only required for nullable columns upon insert, update or delete. (java.sql.Types.*) -->
     <!-- javaType: A fully qualified Java class name, or a type alias (see the table above for the list of built-in type 
       aliases). MyBatis can usually figure out the type if you're mapping to a JavaBean. However, if you are mapping to a HashMap, 
       then you should specify the javaType explicitly to ensure the desired behavior. -->
-    <result column="EMP_ID" property="empId" jdbcType="INTEGER" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
     <result column="GENDER" property="gender" jdbcType="VARCHAR" />
     <result column="AGE" property="age" jdbcType="INTEGER" />
@@ -45,9 +43,9 @@
   </select>
 
   <select id="selectEmployees" resultMap="employeeResultMap">
-    SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees` WHERE ID &lt; 10
-    <if test="city != null and !&quot;&quot;.equals(city.trim())">
-      AND CITY = #{city} <!-- #{city} is gotten from the Employee object passed in -->
+    SELECT * FROM employees WHERE 1 = 1
+    <if test="gender != null and !&quot;&quot;.equals(gender.trim())">
+      AND gender = #{gender}
     </if>
   </select>
 
@@ -60,8 +58,8 @@
     DEPT_ID FROM `employees` WHERE ID = 1
   </select>
 
-  <select id="selectEmployeeWhen" parameterType="Employee" resultMap="employeeResultMap">
-    SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees` WHERE 1 = 1
+  <select id="selectEmployeeByNameAndGender" parameterType="Employee" resultMap="employeeResultMap">
+    SELECT * FROM employees WHERE 1 = 1
     <choose>
       <when test="name != null and !&quot;&quot;.equals(name.trim())">
         AND NAME = #{name}
@@ -70,7 +68,7 @@
         AND GENDER = #{gender}
       </when>
       <otherwise>
-        AND ID &lt; 5
+        LIMIT 10
       </otherwise>
     </choose>
   </select>
@@ -87,8 +85,8 @@
     </where>
   </select>
 
-  <select id="selectEmployeeIn" resultMap="employeeResultMap">
-    SELECT ID, NAME, GENDER, SALARY, AGE, CITY, DEPT_ID FROM `employees`
+  <select id="selectEmployeesByIds" resultMap="employeeResultMap">
+    SELECT * employees
     WHERE ID IN
     <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
       #{item}
@@ -101,7 +99,7 @@
     WHERE NAME LIKE #{pattern}
   </select>
 
-  <select id="selectEmployeeHashMap" resultType="hashmap">
+  <select id="selectEmployeeIntoHashMap" resultType="hashmap">
     SELECT * FROM `employees` WHERE ID = #{id}
   </select>
 
