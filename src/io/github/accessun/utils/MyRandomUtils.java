@@ -27,10 +27,10 @@ public class MyRandomUtils {
         EMAIL_SERVICES = Arrays.asList("@gmail.com", "@hotmail.com", "@outlook.com", "@yahoo.com", "@mail.com");
         try {
             NAMES = new ArrayList<>();
-            LAST_NAMES = IOUtils.readLines(MyRandomUtils.class.getResourceAsStream("lastNames.txt"));
+            LAST_NAMES = IOUtils.readLines(MyRandomUtils.class.getClassLoader().getResourceAsStream("lastNames.txt"));
 
             List<String> listReadIn = IOUtils
-                    .readLines(MyRandomUtils.class.getResourceAsStream("names_with_gender.txt"));
+                    .readLines(MyRandomUtils.class.getClassLoader().getResourceAsStream("names_with_gender.txt"));
             int poolSize = RANDOM_NAME_POOL_SIZE < listReadIn.size() ? RANDOM_NAME_POOL_SIZE : listReadIn.size();
 
             for (int i = 0; i < poolSize; i++) {
@@ -106,12 +106,12 @@ public class MyRandomUtils {
     public static Date randomDate() {
         GregorianCalendar gc = new GregorianCalendar();
 
-        int year = randomInt(1950, 1996 + 1);
+        int year = randomInt(1975, 1996 + 1);
         gc.set(Calendar.YEAR, year);
 
         int dayOfYear = randomInt(1, gc.getActualMaximum(Calendar.DAY_OF_YEAR));
         gc.set(Calendar.DAY_OF_YEAR, dayOfYear);
-
+        
         return new Date(gc.getTimeInMillis());
     }
 

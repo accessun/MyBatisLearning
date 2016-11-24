@@ -23,7 +23,9 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="salary" property="salary" jdbcType="INTEGER" />
     <result column="date_of_birth" property="dateOfBirth" jdbcType="DATE" />
-    <association property="department" resultMap="departmentResultMap"></association>
+    <association property="department" resultMap="departmentResultMap">
+      <result column="dept_id" property="id" />
+    </association>
   </resultMap>
   
   <!-- Demonstration of static SQL -->
@@ -92,13 +94,12 @@
     <where>
       <if test="name != null">emp_name = #{name}</if>
       <if test="gender != null">AND GENDER = #{gender}</if>
-      <if test="age != 0">AND AGE &lt; 30</if>
+      <if test="age != 0">AND AGE &lt; #{age}</if>
     </where>
   </select>
 
   <select id="selectEmployeesByIds" resultMap="employeeResultMap">
-    SELECT * employees
-    WHERE ID IN
+    SELECT * FROM employees WHERE id IN
     <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
       #{item}
     </foreach>
@@ -107,14 +108,14 @@
   <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
     INSERT
     INTO employees (emp_name, gender, age, email, salary, date_of_birth, dept_id)
-    VALUES (#{name}, #{gender}, #{age}, #{email}, #{salary}, #{dateOfBirth}, #{deptId})
+    VALUES (#{name}, #{gender}, #{age}, #{email}, #{salary}, #{dateOfBirth}, #{department.id})
   </insert>
 
   <insert id="insertEmployees" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
     INSERT INTO employees (emp_name, gender, age, email, salary, date_of_birth, dept_id) VALUES
     <foreach collection="list" item="item" separator=",">
       (#{item.name}, #{item.gender}, #{item.age}, #{item.email}, #{item.salary},
-      #{item.dateOfBirth}, #{item.deptId})
+      #{item.dateOfBirth}, #{item.department.id})
     </foreach>
   </insert>
 
@@ -128,11 +129,11 @@
   <update id="updateEmployeeInfosById">
     UPDATE employees
     <set>
-      <if test="name != null and !&quot;&quot;.equals(name.trim())">
+      <if test="name != null">
         emp_name = #{name},
       </if>
       <if test="age != 0">
-        AGE = AGE + 1
+        age = age + #{age}
       </if>
     </set>
     WHERE ID = #{id}
