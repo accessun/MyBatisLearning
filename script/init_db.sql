@@ -14,24 +14,24 @@ USE mybatisdemo;
 DROP TABLE IF EXISTS departments;
 
 CREATE TABLE departments (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  dept_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   dept_name VARCHAR (30) NOT NULL,
   location VARCHAR (30),
   manager_id INT UNSIGNED,
-  PRIMARY KEY (id)
+  PRIMARY KEY (dept_id)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
 CREATE TABLE employees (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    emp_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     emp_name VARCHAR(30) NOT NULL,
     gender ENUM('female', 'male'),
     age INT(3) UNSIGNED,
     email VARCHAR(50),
     salary INT(8) UNSIGNED,
     date_of_birth DATE,
-    dept_id INT UNSIGNED NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (dept_id) REFERENCES departments(id)
+    dept_ref_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (emp_id),
+    FOREIGN KEY (dept_ref_id) REFERENCES departments(dept_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 CREATE TABLE AUTHORS (
@@ -75,7 +75,7 @@ INSERT INTO employees (
   age,
   email,
   date_of_birth,
-  dept_id
+  dept_ref_id
 ) 
 VALUES
   (

@@ -4,14 +4,14 @@
 <mapper namespace="io.github.accessun.entity.EmployeeMapper">
 
   <resultMap type="Department" id="departmentResultMap">
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="dept_id" property="id" jdbcType="INTEGER" />
     <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
-    <!-- <association property="manager" select="selectEmployeeByEmpId" column="MANAGER_ID"></association> -->
+    <association property="manager" column="manager_id" resultMap="employeeResultMap"></association>
   </resultMap>
 
   <resultMap type="Employee" id="employeeResultMap">
-    <id column="id" property="id" jdbcType="INTEGER" /> <!-- java.sql.Types -->
+    <id column="emp_id" property="id" jdbcType="INTEGER" /> <!-- java.sql.Types -->
     <!-- property : You can map to something simple like: username, or to something more complicated like: address.street.number. -->
     <!-- jdbcType: The JDBC type is only required for nullable columns upon insert, update or delete. (java.sql.Types.*) -->
     <!-- javaType: A fully qualified Java class name, or a type alias (see the table above for the list of built-in type 
@@ -23,9 +23,7 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="salary" property="salary" jdbcType="INTEGER" />
     <result column="date_of_birth" property="dateOfBirth" jdbcType="DATE" />
-    <association property="department" resultMap="departmentResultMap">
-      <result column="dept_id" property="id" />
-    </association>
+    <association property="department" column="dept_ref_id" select="selectDepartmentById"></association>
   </resultMap>
   
   <!-- Demonstration of static SQL -->
@@ -42,7 +40,7 @@
     SELECT * FROM employees WHERE ID = #{id}
   </select>
   
-  <select id="selectDepartmentByDeptId" resultMap="departmentResultMap">
+  <select id="selectDepartmentById" resultMap="departmentResultMap">
     SELECT * FROM departments WHERE ID = #{id}
   </select>
 

@@ -11,7 +11,7 @@ public interface EmployeeMapper {
     
     Employee selectEmployeeById(Integer id);
 
-    Department selectDepartmentByDeptId(Integer id);
+    Department selectDepartmentById(Integer id);
     
     Map<String, Object> selectEmployeeIntoHashMap(Integer id);
     

@@ -57,11 +57,11 @@ public class EmployeeMapperTest {
     }
 
     @Test
-    public void testSelectDepartmentByDeptId() {
+    public void testSelectDepartmentById() {
         SqlSession session = MyBatisUtils.getSession();
         EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
         
-        Department department = mapper.selectDepartmentByDeptId(1);
+        Department department = mapper.selectDepartmentById(1);
         System.out.println("selectDepartmentByDeptId =>\n" + department);
         
         session.close();
@@ -177,7 +177,7 @@ public class EmployeeMapperTest {
         
         Date dateOfBirth = MyRandomUtils.randomDate();
         int age = MyDateTimeUtils.yearsFrom(dateOfBirth);
-        Department department = mapper.selectDepartmentByDeptId(1);
+        Department department = mapper.selectDepartmentById(1);
 
         Employee employee = new Employee("Joe Martin", "male", age, "jmartin@example.com", 25000, dateOfBirth, department);
         mapper.insertEmployee(employee);
@@ -195,13 +195,13 @@ public class EmployeeMapperTest {
         
         Date dateOfBirth = MyRandomUtils.randomDate();
         int age = MyDateTimeUtils.yearsFrom(dateOfBirth);
-        Department department = mapper.selectDepartmentByDeptId(1);
+        Department department = mapper.selectDepartmentById(1);
         Employee employee = new Employee("Joe Martin", "male", age, "jmartin@example.com", 25000, dateOfBirth, department);
         employees.add(employee);
         
         dateOfBirth = MyRandomUtils.randomDate();
         age = MyDateTimeUtils.yearsFrom(dateOfBirth);
-        department = mapper.selectDepartmentByDeptId(2);
+        department = mapper.selectDepartmentById(2);
         employee = new Employee("Amy Griffin", "female", age, "agriffin@example.com", 22000, dateOfBirth, department);
         employees.add(employee);
         
